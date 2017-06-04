@@ -17,12 +17,12 @@ export function checkAuthState() {
     return new Promise((resolve, reject) => {
         const unsubscribe = firebaseAuth.onAuthStateChanged(
             user => {
+                unsubscribe();
                 resolve(user);
-                unsubscribe();
             },
-            err => {
-                reject(err);
+            error => {
                 unsubscribe();
+                reject(`${error.code} - ${error.message}`);
             },
         )
     })
@@ -31,7 +31,7 @@ export function checkAuthState() {
 
 /**
  * Attempt a user sign up with the provided email and password and returns a
- * promise with the user data, if successful 
+ * promise with the user data, if successful
  */
 export function firebaseSignupEmail(email, password) {
     return new Promise((resolve, reject) => {
