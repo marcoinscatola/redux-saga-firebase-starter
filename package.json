@@ -25,6 +25,7 @@
     "babel-runtime": "6.23.0",
     "case-sensitive-paths-webpack-plugin": "1.1.4",
     "chalk": "1.1.3",
+    "cross-env": "^5.0.1",
     "css-loader": "0.28.1",
     "dotenv": "4.0.0",
     "eslint": "3.19.0",
@@ -54,9 +55,9 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "NODE_PATH=./src node scripts/start.js",
-    "build": "NODE_PATH=./src node scripts/build.js",
-    "test": "NODE_PATH=./src node scripts/test.js --env=jsdom"
+    "start": "cross-env NODE_PATH=./src node scripts/start.js",
+    "build": "cross-env NODE_PATH=./src node scripts/build.js",
+    "test": "cross-env NODE_PATH=./src node scripts/test.js --env=jsdom"
   },
   "jest": {
     "collectCoverageFrom": [
