@@ -1,3 +1,7 @@
+import {dispatchAuthState} from './methods';
+import {__setCurrentUser} from 'api/auth';
+import {loginSuccess} from './actions';
+
 jest.mock('api/auth', () => {
     let __user = null;
     const mock = {
@@ -11,9 +15,6 @@ jest.mock('api/auth', () => {
     return mock;
 })
 
-import {dispatchAuthState} from './methods';
-import {__setCurrentUser} from 'api/auth';
-import {loginSuccess} from './actions';
 
 describe('dispatchAuthState', () => {
     test('it returns a promise', () => {

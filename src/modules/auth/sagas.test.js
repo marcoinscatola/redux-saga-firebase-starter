@@ -1,5 +1,5 @@
 import * as authSagas from './sagas';
-import { call, put, takeLatest, all } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import {
     LOGOUT,
     LOGIN_EMAIL,
@@ -8,9 +8,6 @@ import {
     logoutSuccess,
     authFailure
 } from './actions';
-
-
-import {runSaga} from 'redux-saga';
 
 describe('loginEmailSaga', () => {
     const userData = {name:'test'};

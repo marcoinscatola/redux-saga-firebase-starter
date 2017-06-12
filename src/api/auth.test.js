@@ -1,3 +1,6 @@
+import * as authApi from './auth';
+import {firebaseAuth} from './firebase'
+
 jest.mock('./firebase', () => ({
     firebaseAuth: {
         __EXISTING_EMAIL: 'testemail',
@@ -58,8 +61,6 @@ jest.mock('./firebase', () => ({
     }
 }))
 
-import * as authApi from './auth';
-import {firebaseAuth} from './firebase'
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -153,8 +154,6 @@ describe('firebaseLogout', () => {
 
 describe('checkAuthState', () => {
     it('calls firebase.onAuthStateChanged', () => {
-        const testCb = () => null;
-        const testErrCb = () => null;
         authApi.checkAuthState()
         .catch(err => err) //catch the rejection, it doesn't matter for this test
         expect(firebaseAuth.onAuthStateChanged.mock.calls.length).toBe(1);

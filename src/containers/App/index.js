@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import AppBar from 'containers/AppBar';
 import {FlexBox, FlexItem} from 'components/Flex';
 import {withRouter} from 'react-router-dom';
