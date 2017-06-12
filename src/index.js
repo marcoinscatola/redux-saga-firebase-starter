@@ -10,8 +10,7 @@ import { authMethods } from 'modules/auth';
 
 // route components
 import App from 'containers/App';
-import Login from 'containers/Login';
-import Signup from 'containers/Signup';
+import {Login, Signup} from 'containers/Auth';
 import Dashboard from 'containers/Dashboard';
 import Home from 'containers/Home';
 
