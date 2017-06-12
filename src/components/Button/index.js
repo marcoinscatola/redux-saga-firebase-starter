@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import inject from 'react-jss';
 import cx from 'classnames';
+import COLORS from 'style/colors';
 const styles = {
     button: {
         fontWeight: '500',
@@ -47,7 +48,7 @@ const styles = {
         border: '1px solid #a0b3b0'
     },
     primary: {
-        backgroundColor: '#266DD3',
+        backgroundColor: COLORS.primary,
         color: '#FFF',
         '&:hover': {
             backgroundColor: '#39a1f4'

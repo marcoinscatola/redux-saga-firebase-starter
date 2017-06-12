@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {authActions} from 'modules/auth';
 import flow from 'lodash/flow';
+import Button from 'components/Button';
+
 class LoggedInActions extends Component {
 
     handleLogout = () => {
@@ -14,9 +16,9 @@ class LoggedInActions extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.handleLogout}>
+                <Button onClick={this.handleLogout}>
                     Log out
-                </button>
+                </Button>
             </div>
         )
     }

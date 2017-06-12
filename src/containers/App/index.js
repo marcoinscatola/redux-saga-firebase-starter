@@ -4,13 +4,23 @@ import AppBar from 'containers/AppBar';
 import {FlexBox, FlexItem} from 'components/Flex';
 import {withRouter} from 'react-router-dom';
 import flow from 'lodash/flow';
+import inject from 'react-jss';
+import COLORS from 'style/colors';
+const styles = {
+    workarea: {
+        backgroundColor: COLORS.background,
+        color: COLORS.secondary
+    }
+}
+
+
 class App extends Component {
     render() {
-        let {children} = this.props;
+        let {children, classes} = this.props;
         return (
             <FlexBox direction='column'>
                 <AppBar/>
-                <FlexItem>
+                <FlexItem className={classes.workarea}>
                     {children}
                 </FlexItem>
             </FlexBox>
@@ -19,7 +29,7 @@ class App extends Component {
 }
 
 let enhance = flow(
-    connect(),
+    inject(styles),
     withRouter
 )
 export default enhance(App);

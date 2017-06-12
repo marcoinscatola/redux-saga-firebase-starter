@@ -8,5 +8,5 @@ let styles = {
     }
 }
 export default inject(styles)(
-    ({classes}) => <Link to="/" className={classes.logo}>JDI</Link>
+    ({classes}) => <Link to="/" className={classes.logo}>LOGO</Link>
 )

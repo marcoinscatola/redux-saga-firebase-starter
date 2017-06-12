@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import inject from 'react-jss';
 import cx from 'classnames';
+import COLORS from 'style/colors';
+
 const styles = {
     input: {
         fontSize: '22px',
@@ -11,17 +13,21 @@ const styles = {
         padding: '5px 10px',
         background: 'none',
         backgroundImage: 'none',
-        border: '1px solid #a0b3b0',
-        color: '#ffffff',
+        border: '1px solid '+ COLORS.inactive,
+        color: COLORS.secondary,
         borderRadius: '0',
         transition: 'border-color .25s ease, box-shadow .25s ease',
         '&:focus': {
-            borderColor: '#2196F3'
+            borderColor: COLORS.primary
+        },
+        '&::placeholder': {
+            opacity: 0.6,
+            color: COLORS.inactive
         },
         boxSizing: 'border-box',
         minHeight: 32,
         outline: 'none',
-        
+
     },
     'inverted': {
         border: '1px solid #454545',

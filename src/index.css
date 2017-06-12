@@ -11,3 +11,7 @@ html, body, #root {
 #root {
     display: flex;
 }
+
+a:visited, a:active, a:hover, a:link {
+    color: inherit;
+}

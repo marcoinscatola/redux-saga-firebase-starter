@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
+import Button from 'components/Button';
+
 
 class LoggedInActions extends Component {
 
@@ -16,12 +18,12 @@ class LoggedInActions extends Component {
     render() {
         return (
             <div>
-                <button primary onClick={this.handleLogin}>
+                <Button primary onClick={this.handleLogin}>
                     Login
-                </button>
-                <button onClick={this.handleSignup}>
+                </Button>
+                <Button onClick={this.handleSignup}>
                     Sign up
-                </button>
+                </Button>
             </div>
         )
     }
