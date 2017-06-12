@@ -4,6 +4,7 @@ import AppBarLayout from 'components/AppBar';
 import Logo from './Logo';
 import LoginActions from './LoginActions';
 import LoggedInActions from './LoggedInActions';
+import {authSelectors} from 'modules/auth'
 class AppBar extends Component {
     render() {
         let {loggedIn} = this.props;
@@ -18,6 +19,6 @@ class AppBar extends Component {
     }
 }
 const mapStateToProps = state => ({
-    loggedIn: state.auth.loggedIn
+    loggedIn: authSelectors.loggedIn(state)
 })
 export default connect(mapStateToProps)(AppBar);
