@@ -21,13 +21,12 @@ import inject from 'react-jss';
 import cx from 'classnames';
 let style = {
     flex: {
-        flex: '1 1 0',
+        flex: '1 1 auto',
         overflow: 'hidden',
-        display: 'flex'
     },
     fixed: {
         extend: 'flex',
-        flex: '0 0 0',
+        flex: '0 0 auto',
     },
     minHeight: {
         flexBasis: 'auto',
