@@ -7,8 +7,8 @@ const styles = {
     button: {
         fontWeight: '500',
         textTransform: 'uppercase',
-        color: 'rgba(0,0,0,.87)',
-        backgroundColor: '#FFF',
+        color: COLORS.darkText.string(),
+        backgroundColor:  COLORS.secondary.string(),
         display: 'inline-block',
         height: '36px',
         padding: '0 26px',
@@ -27,6 +27,7 @@ const styles = {
         fontFamily: 'inherit',
         letterSpacing: '.03em',
         transition: 'all 0.3s',
+        outline: 'none',
         '&+$button': {
             marginLeft: 8
         },
@@ -36,29 +37,37 @@ const styles = {
             boxShadow: 'none'
         },
         '&:hover': {
-            boxShadow: '0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2)'
+            boxShadow: '0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2)',
+            backgroundColor: COLORS.secondary.lighten(0.2).string()
         },
         '&:active': {
-            boxShadow: 'none'
+            boxShadow: 'none',
+            backgroundColor: COLORS.secondary.darken(0.2).string()
         }
     },
     outline: {
-        color: '#a0b3b0',
+        color: COLORS.secondary.string(),
         backgroundColor: 'transparent',
-        border: '1px solid #a0b3b0'
+        border: '1px solid ' + COLORS.secondary.string()
     },
     primary: {
-        backgroundColor: COLORS.primary,
-        color: '#FFF',
+        backgroundColor: COLORS.primary.string(),
+        color: COLORS.lightText.string(),
         '&:hover': {
-            backgroundColor: '#39a1f4'
+            backgroundColor: COLORS.primary.lighten(0.2).string()
+        },
+        '&:active': {
+            backgroundColor: COLORS.primary.darken(0.2).string()
         }
     },
     danger: {
-        backgroundColor: '#9E2B25',
-        color: '#FFF',
+        backgroundColor: COLORS.danger.string(),
+        color: COLORS.lightText.string(),
         '&:hover': {
-            backgroundColor: '#f55a4e'
+            backgroundColor: COLORS.danger.lighten(0.2).string()
+        },
+        '&:active': {
+            backgroundColor: COLORS.danger.darken(0.2).string()
         }
     }
 }

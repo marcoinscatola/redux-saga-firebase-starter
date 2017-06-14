@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import inject from 'react-jss';
+import COLORS from 'style/colors';
 
 const styles = {
     bar: {
         width: '100%',
-        backgroundColor: "rgb(10, 32, 45)"
+        backgroundColor: COLORS.appBar.string()
     },
     inner: {
         padding: '10px',
         fontSize: '24px',
         fontWeight: '700',
         fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
-        color: '#fff',
+        color:  COLORS.lightText.string(),
         '&:after': {
             content: '""',
             clear: 'both',

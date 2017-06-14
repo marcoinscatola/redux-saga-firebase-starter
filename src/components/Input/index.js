@@ -13,16 +13,16 @@ const styles = {
         padding: '5px 10px',
         background: 'none',
         backgroundImage: 'none',
-        border: '1px solid '+ COLORS.inactive,
-        color: COLORS.secondary,
+        border: '1px solid '+ COLORS.inactive.string(),
+        color: COLORS.secondary.string(),
         borderRadius: '0',
         transition: 'border-color .25s ease, box-shadow .25s ease',
         '&:focus': {
-            borderColor: COLORS.primary
+            borderColor: COLORS.primary.string()
         },
         '&::placeholder': {
             opacity: 0.6,
-            color: COLORS.inactive
+            color: COLORS.inactive.string()
         },
         boxSizing: 'border-box',
         minHeight: 32,

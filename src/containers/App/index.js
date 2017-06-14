@@ -7,8 +7,14 @@ import inject from 'react-jss';
 import COLORS from 'style/colors';
 const styles = {
     workarea: {
-        backgroundColor: COLORS.background,
-        color: COLORS.secondary
+        backgroundColor: COLORS.background.string(),
+        color: COLORS.lightText.string(),
+        boxSizing: 'border-box',
+        padding: '24px',
+    },
+    innerWorkarea: {
+        maxWidth: 1250,
+        margin: 'auto'
     }
 }
 
@@ -20,7 +26,9 @@ class App extends Component {
             <FlexBox direction='column'>
                 <AppBar/>
                 <FlexItem className={classes.workarea}>
-                    {children}
+                    <div className={classes.innerWorkarea}>
+                        {children}
+                    </div>
                 </FlexItem>
             </FlexBox>
         )
