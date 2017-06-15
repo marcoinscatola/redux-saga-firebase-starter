@@ -3,7 +3,7 @@ import firebase from 'firebase';
 /**
  * Config your firebase parameters in a .env.development.local file or a
  * .env.production.local file with the following variables.
- * Make sure their names start with REACT_APP_ otherwise they'll 
+ * Make sure their names start with REACT_APP_ otherwise they'll
  * be filtered out during the build step by the create-react-app scripts
  */
 const config = {
@@ -14,5 +14,8 @@ const config = {
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
-export const firebaseApp = firebase.initializeApp(config);
-export const firebaseAuth = firebaseApp.auth();
+firebase.initializeApp(config);
+export const firebaseApp = firebase
+export const firebaseAuth = firebase.auth();
+
+window.firebase = firebase
