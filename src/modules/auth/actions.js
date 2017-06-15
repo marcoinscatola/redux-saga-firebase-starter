@@ -1,5 +1,6 @@
 export const SIGNUP_EMAIL = 'SIGNUP_EMAIL';
 export const LOGIN_EMAIL = 'LOGIN_EMAIL';
+export const LOGIN_GOOGLE = 'LOGIN_GOOGLE';
 export const LOGIN_OAUTH = 'LOGIN_OAUTH';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
@@ -37,6 +38,21 @@ export const signupEmail = (email, password, redirect='/dashboard') => ({
 export const loginEmail = (email, password, redirect='/dashboard') => ({
     type: LOGIN_EMAIL,
     payload: {email, password, redirect}
+})
+
+
+/**
+ * Creates an action of type LOGIN_GOOGLE that signals the intention to login
+ * with google oauth.
+ * Handled by authSagas.
+ * @param  {string} redirect Path of the route that should be opened when the login
+ *                           is successful. Default: /dashboard
+ * @return object            A FSA-compliant action, the payload contains the
+ *                           redirect
+ */
+export const loginGoogle = (redirect='/dashboard') => ({
+    type: LOGIN_GOOGLE,
+    payload: {redirect}
 })
 
 /**

@@ -2,6 +2,7 @@ import { call, put, takeLatest, all, fork } from 'redux-saga/effects'
 import {
     LOGOUT,
     LOGIN_EMAIL,
+    LOGIN_GOOGLE,
     SIGNUP_EMAIL,
     loginSuccess,
     logoutSuccess,
@@ -10,6 +11,7 @@ import {
 import {history} from 'routing';
 import {
     firebaseLoginEmail,
+    firebaseLoginGoogle,
     firebaseSignupEmail,
     firebaseLogout,
 } from 'api/auth';
@@ -38,13 +40,39 @@ export function* loginEmailSaga(libs, action) {
     }
 }
 
+
+/**
+ * Acts when the saga takes a loginGoogle action and calls the firebaseLoginEmail api.
+ * If successful it dispatches a loginSuccess action with the resulting data.
+ * Caught errors will be dispatched in an authFailure action.
+ * If successful it will also call history.push to redirect to /dashboard or to
+ * the specified redirect.
+ * @param  {object}  libs   Dependencies injected by the watcher
+ * @param  {object}  action The loginGoogle action containing the redirect
+ * @return Generator
+ */
+export function* loginGoogleSaga(libs, action) {
+    const {redirect} = action.payload;
+    const {firebaseLoginGoogle, history} = libs;
+    try {
+        const userData = yield call(firebaseLoginGoogle)
+        yield put(loginSuccess(userData))
+        if (redirect)
+            yield call([history, history.push],redirect)
+    }
+    catch (err) {
+        yield put(authFailure(err))
+    }
+}
+
 /**
  * Acts when the saga takes a signupEmail action and calls the firebaseSignupEmail api.
  * If successful it dispatches a loginSuccess action with the resulting data.
  * Caught errors will be dispatched in an authFailure action.
  * If successful it will also call history.push to redirect to /dashboard or to
  * the specified redirect.
- * @param  {object}  action The loginEmail action containing the email, password
+ * @param  {object}  libs   Dependencies injected by the watcher
+ * @param  {object}  action The signupEmail action containing the email, password
  *                          and redirect
  * @return Generator
  */
@@ -95,6 +123,18 @@ export function* watchLoginEmail({firebaseLoginEmail, history}) {
 }
 
 /**
+ * On every action of type LOGIN_GOOGLE spawn a loginGoogleSaga. In case of
+ * concurrent login attempts the latest one cancels the previous ones.
+ * The loginGoogleSaga will be started with the required libs as the first
+ * argument and the action as the second argument
+ * @return Generator
+ */
+
+export function* watchLoginGoogle({firebaseLoginGoogle, history}) {
+    yield takeLatest(LOGIN_GOOGLE, loginGoogleSaga, {firebaseLoginGoogle, history});
+}
+
+/**
  * On every action of type SIGNUP_EMAIL spawn a signupEmailSaga. In case of
  * concurrent signup attempts the latest one cancels the previous ones.
  * @return Generator
@@ -124,6 +164,7 @@ export function getRootSaga(libs) {
     return function* () {
         yield all([
             fork(watchLoginEmail, libs),
+            fork(watchLoginGoogle, libs),
             fork(watchSignupEmail, libs),
             fork(watchLogout, libs)
         ])
@@ -138,6 +179,7 @@ export function getRootSaga(libs) {
 export default getRootSaga({
     firebaseSignupEmail,
     firebaseLoginEmail,
+    firebaseLoginGoogle,
     firebaseLogout,
     history
 })

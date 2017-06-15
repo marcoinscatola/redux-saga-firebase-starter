@@ -59,6 +59,29 @@ test('loginEmail uses /dashboard as a default redirect', () => {
     })
 })
 
+
+test('loginGoogle returns an action to attempt a login with google', () => {
+    const redirect = '/redirect';
+    expect(authActions.loginGoogle(redirect))
+    .toEqual({
+        type: authActions.LOGIN_GOOGLE,
+        payload: {
+            redirect
+        }
+    })
+})
+
+
+test('loginGoogle uses /dashboard as a default redirect', () => {
+    expect(authActions.loginGoogle())
+    .toEqual({
+        type: authActions.LOGIN_GOOGLE,
+        payload: {
+            redirect: '/dashboard'
+        }
+    })
+})
+
 test('loginSuccess returns an action with the user data', () => {
     const userData = {
         name: 'test',

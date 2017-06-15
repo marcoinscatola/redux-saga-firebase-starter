@@ -25,6 +25,12 @@ class Login extends Component {
         if (location.state && location.state.from) redirect = location.state.from.pathname
         loginEmail(email, password, redirect);
     }
+    handleLoginGoogle = () => {
+        let {location, loginGoogle} = this.props
+        let redirect;
+        if (location.state && location.state.from) redirect = location.state.from.pathname
+        loginGoogle(redirect);
+    }
     render() {
         let {classes} = this.props;
         return (
@@ -57,7 +63,10 @@ class Login extends Component {
                     or
                 </FlexItem>
                 <FlexItem fixed className={classes.buttonItem}>
-                    <Button className={classes.button}>
+                    <Button
+                        className={classes.button}
+                        onClick={this.handleLoginGoogle}
+                    >
                         Login with Google
                     </Button>
                 </FlexItem>
@@ -70,7 +79,8 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    loginEmail: (user, pw, redirect) => dispatch(authActions.loginEmail(user, pw, redirect))
+    loginEmail: (user, pw, redirect) => dispatch(authActions.loginEmail(user, pw, redirect)),
+    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
 })
 
 const enhance = flow(

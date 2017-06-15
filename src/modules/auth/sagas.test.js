@@ -3,6 +3,7 @@ import { call, put } from 'redux-saga/effects'
 import {
     LOGOUT,
     LOGIN_EMAIL,
+    LOGIN_GOOGLE,
     SIGNUP_EMAIL,
     loginSuccess,
     logoutSuccess,
@@ -52,6 +53,58 @@ describe('loginEmailSaga', () => {
         let gen = authSagas.loginEmailSaga({firebaseLoginEmail, history}, action);
         it('yields a call to firebaseLoginEmail', () => {
             expect(gen.next().value).toEqual(call(firebaseLoginEmail, action.payload.email, action.payload.password))
+        })
+        it('yields a dispatch of authFailure', () => {
+            expect(gen.throw(error).value).toEqual(put(authFailure(error)))
+        })
+        it('terminates', () => {
+            expect(gen.next().done).toBe(true);
+        })
+    })
+
+})
+
+describe('loginGoogleSaga', () => {
+    const userData = {name:'test'};
+    const error = new Error('test');
+
+    let action = {
+        type: LOGIN_GOOGLE,
+        payload: {
+            redirect: "redirect"
+        }
+    }
+    const successPromise = jest.fn(() => Promise.resolve(userData));
+    const failurePromise = jest.fn(() => Promise.reject(error))
+    // mock login with a Promise that resolves with the userData
+    const history = {push: jest.fn()};
+
+    it('returns a generator', () => {
+        expect(authSagas.loginGoogleSaga().next).toBeDefined();
+    })
+
+    describe('on a successful run (implementation)', () => {
+        let firebaseLoginGoogle = successPromise;
+        let gen = authSagas.loginGoogleSaga({firebaseLoginGoogle, history}, action);
+        it('yields a call to firebaseLoginGoogle', () => {
+            expect(gen.next().value).toEqual(call(firebaseLoginGoogle))
+        })
+        it('yields a dispatch of loginSuccess', () => {
+            expect(gen.next(userData).value).toEqual(put(loginSuccess(userData)))
+        })
+        it('yields a call to history.push', () => {
+            expect(gen.next().value).toEqual(call([history, history.push], action.payload.redirect))
+        })
+        it('terminates', () => {
+            expect(gen.next().done).toBe(true);
+        })
+    })
+
+    describe('on api error (implementation)', () => {
+        let firebaseLoginGoogle = failurePromise;
+        let gen = authSagas.loginGoogleSaga({firebaseLoginGoogle, history}, action);
+        it('yields a call to firebaseLoginGoogle', () => {
+            expect(gen.next().value).toEqual(call(firebaseLoginGoogle))
         })
         it('yields a dispatch of authFailure', () => {
             expect(gen.throw(error).value).toEqual(put(authFailure(error)))

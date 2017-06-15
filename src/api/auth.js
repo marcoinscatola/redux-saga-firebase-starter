@@ -1,4 +1,4 @@
-import {firebaseAuth} from 'api/firebase';
+import {firebaseApp, firebaseAuth} from 'api/firebase';
 
 /**
  * Return the current logged in user or null
@@ -61,6 +61,22 @@ export function firebaseLoginEmail(email, password) {
     })
 }
 
+/**
+ * Attempt a user log in with with google and returns a
+ * promise with the user data, if successful
+ */
+export function firebaseLoginGoogle() {
+    return new Promise((resolve, reject) => {
+        let googleProvider = new firebaseApp.auth.GoogleAuthProvider();
+        firebaseAuth.signInWithPopup(googleProvider)
+        .catch(error => {
+            reject(`${error.code} - ${error.message}`)
+        })
+        .then(res => {
+            resolve(firebaseAuth.currentUser)
+        })
+    })
+}
 
 /**
  * Attempt a user logout and returns a promise
