@@ -29,16 +29,7 @@ jest.mock('./firebase', () => ({
         __mockAuthErr: function() {
             this.__onAuthErrCb.forEach(cb => cb(this.__ERROR))
         },
-        signInWithPopup: jest.fn(function(provider) {
-            if (!this.__failNext) {
-                this.currentUser = this.__EXISTING_USER
-                return Promise.resolve(this.currentUser)
-            }
-            else {
-                this.__failNext = false;
-                return Promise.reject(this.__ERROR);
-            }
-        }),
+        signInWithRedirect: jest.fn(),
         signInWithEmailAndPassword: jest.fn(function(email, password) {
             if(password === this.__EXISTING_PW && email === this.__EXISTING_EMAIL) {
                 this.currentUser = this.__EXISTING_USER;
@@ -148,28 +139,8 @@ describe('firebaseLoginGoogle', () => {
     it('calls firebase.auth().signInWithPopup', () => {
         authApi.firebaseLoginGoogle()
         .catch(err => err) //catch the rejection, it doesn't matter for this test
-        expect(firebaseAuth.signInWithPopup.mock.calls.length).toBe(1);
-        expect(firebaseAuth.signInWithPopup.mock.calls[0][0]).toBeInstanceOf(firebaseApp.auth.GoogleAuthProvider);
-    })
-
-    it('sets and resolves the current user on a successful login', () => {
-        const {__EXISTING_USER} = firebaseAuth;
-        expect.assertions(2);
-        return authApi.firebaseLoginGoogle()
-        .then(res => {
-            expect(res).toEqual(__EXISTING_USER);
-            expect(authApi.getFirebaseCurrentUser()).toEqual(__EXISTING_USER)
-        })
-    })
-
-    it('rejects on an unsuccessful login', () => {
-        const {__ERROR} = firebaseAuth;
-        firebaseAuth.__failNext = true
-        expect.assertions(1);
-        return authApi.firebaseLoginGoogle()
-        .catch(err => {
-            expect(err).toEqual(`${__ERROR.code} - ${__ERROR.message}`);
-        })
+        expect(firebaseAuth.signInWithRedirect.mock.calls.length).toBe(1);
+        expect(firebaseAuth.signInWithRedirect.mock.calls[0][0]).toBeInstanceOf(firebaseApp.auth.GoogleAuthProvider);
     })
 })
 

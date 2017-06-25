@@ -1,9 +1,10 @@
-import { call, put, takeLatest, all, fork } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects'
 import {
     LOGOUT,
     LOGIN_EMAIL,
     LOGIN_GOOGLE,
     SIGNUP_EMAIL,
+    LOGIN_SUCCESS,
     loginSuccess,
     logoutSuccess,
     authFailure
@@ -17,48 +18,79 @@ import {
 } from 'api/auth';
 
 /**
- * Acts when the saga takes a loginEmail action and calls the firebaseLoginEmail api.
+ * Helper used to store the redirect in session storage. On a login success the
+ * app will attempt to load the redirect path from the storage and push it to
+ * history. This will work for both in-app auth flows and for auth flows that
+ * take the user to a different page to authenticate (most oauth providers)
+ * @param  {string}  redirect The path to redirect after a successful login
+ */
+function setRedirectToStorage(redirect) {
+    sessionStorage.setItem('authSuccessRedirect', redirect)
+}
+
+/**
+ * Helper used to get the redirect from session storage. On a login success the
+ * app will attempt to load the redirect path from the storage and push it to
+ * history. This will work for both in-app auth flows and for auth flows that
+ * take the user to a different page to authenticate (most oauth providers)
+ * @return {string}  The path to redirect after a successful login
+ */
+function getRedirectFromStorage() {
+    return sessionStorage.getItem('authSuccessRedirect')
+}
+
+/**
+ * Helper used to get the clear redirect from session storage.
+ */
+function removeRedirectFromStorage() {
+    sessionStorage.removeItem('authSuccessRedirect')
+}
+
+/**
+ * This process runs when the saga takes a loginEmail action. It will call the
+ * firebaseLoginEmail api.
  * If successful it dispatches a loginSuccess action with the resulting data.
  * Caught errors will be dispatched in an authFailure action.
- * If successful it will also call history.push to redirect to /dashboard or to
- * the specified redirect.
+ * If a redirect is specified it will be set to session storage for use in the
+ * login success saga
+ * @param {object}   libs   Dependencies injected by the watcher
  * @param  {object}  action The loginEmail action containing the email, password
  *                          and redirect
  * @return Generator
  */
 export function* loginEmailSaga(libs, action) {
     const {email, password, redirect} = action.payload;
-    const {firebaseLoginEmail, history} = libs;
+    const {firebaseLoginEmail, setRedirectToStorage} = libs;
     try {
+        if (redirect)
+            yield call(setRedirectToStorage, redirect)
         const userData = yield call(firebaseLoginEmail, email, password)
         yield put(loginSuccess(userData))
-        if (redirect)
-            yield call([history, history.push],redirect)
     }
     catch (err) {
         yield put(authFailure(err))
     }
 }
 
-
 /**
- * Acts when the saga takes a loginGoogle action and calls the firebaseLoginEmail api.
- * If successful it dispatches a loginSuccess action with the resulting data.
- * Caught errors will be dispatched in an authFailure action.
- * If successful it will also call history.push to redirect to /dashboard or to
- * the specified redirect.
+ * This process runs when the saga takes a loginGoogle action. It will call the
+ * firebaseLoginGoogle api.
+ * The user will be redirected to another page to login with their google credentials
+ * and will be redirected to the app when successful. The app will then dispatch a
+ * a login success action before rendering the main component.
+ * If a redirect is specified it will be set to session storage for use in the
+ * login success saga
  * @param  {object}  libs   Dependencies injected by the watcher
  * @param  {object}  action The loginGoogle action containing the redirect
  * @return Generator
  */
 export function* loginGoogleSaga(libs, action) {
     const {redirect} = action.payload;
-    const {firebaseLoginGoogle, history} = libs;
+    const {firebaseLoginGoogle, setRedirectToStorage} = libs;
     try {
-        const userData = yield call(firebaseLoginGoogle)
-        yield put(loginSuccess(userData))
         if (redirect)
-            yield call([history, history.push],redirect)
+            yield call(setRedirectToStorage, redirect)
+        yield call(firebaseLoginGoogle)
     }
     catch (err) {
         yield put(authFailure(err))
@@ -66,11 +98,12 @@ export function* loginGoogleSaga(libs, action) {
 }
 
 /**
- * Acts when the saga takes a signupEmail action and calls the firebaseSignupEmail api.
+ * This process runs when the saga takes a signupEmail action. It will call the
+ * firebaseSignupEmail api.
  * If successful it dispatches a loginSuccess action with the resulting data.
  * Caught errors will be dispatched in an authFailure action.
- * If successful it will also call history.push to redirect to /dashboard or to
- * the specified redirect.
+ * If a redirect is specified it will be set to session storage for use in the
+ * login success saga
  * @param  {object}  libs   Dependencies injected by the watcher
  * @param  {object}  action The signupEmail action containing the email, password
  *                          and redirect
@@ -78,12 +111,12 @@ export function* loginGoogleSaga(libs, action) {
  */
 export function* signupEmailSaga(libs, action) {
     const {email, password, redirect} = action.payload;
-    const {firebaseSignupEmail, history} = libs;
+    const {firebaseSignupEmail, setRedirectToStorage} = libs;
     try {
+        if (redirect)
+            yield call(setRedirectToStorage, redirect)
         const userData = yield call(firebaseSignupEmail, email, password)
         yield put(loginSuccess(userData))
-        if (redirect)
-            yield call([history, history.push],redirect)
     }
     catch (err) {
         yield put(authFailure(err))
@@ -91,10 +124,12 @@ export function* signupEmailSaga(libs, action) {
 }
 
 /**
- * Acts when the saga takes a logout action and calls the firebaseLogout api.
+ * This process runs when the saga takes a logout action. It will call the
+ * firebaseLogout api.
  * If successful it dispatches a logoutSuccess action.
  * Caught errors will be dispatched in an authFailure action.
  * If successful it will also call history.push to redirect to / .
+ * @param  {object}  libs   Dependencies injected by the watcher
  * @param  {object}  action The loginEmail action containing the email, password
  *                          and redirect
  * @return Generator
@@ -112,62 +147,43 @@ export function* logoutSaga(libs, action) {
 }
 
 /**
- * On every action of type LOGIN_EMAIL spawn a loginEmailSaga. In case of
- * concurrent login attempts the latest one cancels the previous ones.
- * The loginEmailSaga will be started with the required libs as the first
- * argument and the action as the second argument
+ * This process runs when the saga takes a logout action. It will handle the
+ * redirect after the login (since we're not integrated with react-router-redux
+ * it's technically a side-effect).
+ * @param  {object}  libs   Dependencies injected by the watcher
  * @return Generator
  */
-export function* watchLoginEmail({firebaseLoginEmail, history}) {
-    yield takeLatest(LOGIN_EMAIL, loginEmailSaga, {firebaseLoginEmail, history});
-}
+export function* loginSuccessSaga(libs) {
+    const {
+        getRedirectFromStorage,
+        removeRedirectFromStorage,
+        history
+    } = libs;
 
-/**
- * On every action of type LOGIN_GOOGLE spawn a loginGoogleSaga. In case of
- * concurrent login attempts the latest one cancels the previous ones.
- * The loginGoogleSaga will be started with the required libs as the first
- * argument and the action as the second argument
- * @return Generator
- */
-
-export function* watchLoginGoogle({firebaseLoginGoogle, history}) {
-    yield takeLatest(LOGIN_GOOGLE, loginGoogleSaga, {firebaseLoginGoogle, history});
-}
-
-/**
- * On every action of type SIGNUP_EMAIL spawn a signupEmailSaga. In case of
- * concurrent signup attempts the latest one cancels the previous ones.
- * @return Generator
- */
-export function* watchSignupEmail({firebaseSignupEmail, history}) {
-    yield takeLatest(SIGNUP_EMAIL, signupEmailSaga, {firebaseSignupEmail, history});
-}
-
-/**
- * On every action of type LOGOUT spawn a logoutSaga. In case of
- * concurrent logout attempts the latest one cancels the previous ones.
- * @return Generator
- */
-export function* watchLogout({firebaseLogout, history}) {
-    yield takeLatest(LOGOUT, logoutSaga, {firebaseLogout, history});
+    let redirect = yield call (getRedirectFromStorage);
+    if (redirect) {
+        yield call([history, history.push], redirect)
+        yield call(removeRedirectFromStorage)
+    }
 }
 
 /**
  * Returns the root saga, created by injecting the dependencies and passing
  * them down to the sub sagas. Injecting the dependencies makes it easier
  * to unit test the sagas without mocking every module globally.
+ * The root saga watches for LOGOUT, SIGNUP_EMAIL, LOGIN_GOOGLE, LOGIN_EMAIL,
+ * LOGIN_SUCCESS actions and forks the corresponding saga.
  * @param {object} libs An object containing the dependencies needed by the
  *                      sub sagas
  * @return function*
  */
 export function getRootSaga(libs) {
     return function* () {
-        yield all([
-            fork(watchLoginEmail, libs),
-            fork(watchLoginGoogle, libs),
-            fork(watchSignupEmail, libs),
-            fork(watchLogout, libs)
-        ])
+        yield takeLatest(LOGOUT, logoutSaga, libs);
+        yield takeLatest(SIGNUP_EMAIL, signupEmailSaga, libs);
+        yield takeLatest(LOGIN_GOOGLE, loginGoogleSaga, libs);
+        yield takeLatest(LOGIN_EMAIL, loginEmailSaga, libs);
+        yield takeLatest(LOGIN_SUCCESS, loginSuccessSaga, libs);
     }
 }
 
@@ -181,5 +197,8 @@ export default getRootSaga({
     firebaseLoginEmail,
     firebaseLoginGoogle,
     firebaseLogout,
-    history
+    history,
+    getRedirectFromStorage,
+    removeRedirectFromStorage,
+    setRedirectToStorage
 })

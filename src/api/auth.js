@@ -62,19 +62,21 @@ export function firebaseLoginEmail(email, password) {
 }
 
 /**
- * Attempt a user log in with with google and returns a
- * promise with the user data, if successful
+ * Attempt a user log in with google. The user will be taken to a different page
+ * to login with their google credential and then will be redirected to the page
+ * the app. The auth result will be handled by the initialization method in
+ * src/index.js
  */
 export function firebaseLoginGoogle() {
     return new Promise((resolve, reject) => {
         let googleProvider = new firebaseApp.auth.GoogleAuthProvider();
-        firebaseAuth.signInWithPopup(googleProvider)
-        .catch(error => {
-            reject(`${error.code} - ${error.message}`)
-        })
-        .then(res => {
-            resolve(firebaseAuth.currentUser)
-        })
+        firebaseAuth.signInWithRedirect(googleProvider)
+        // .catch(error => {
+        //     reject(`${error.code} - ${error.message}`)
+        // })
+        // .then(res => {
+        //     resolve(firebaseAuth.currentUser)
+        // })
     })
 }
 
