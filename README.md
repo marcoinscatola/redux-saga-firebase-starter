@@ -20,6 +20,22 @@ Even if not suitable for production, reading through the comments and the tests 
 
 5. Run `npm start` to launch the app on the local development server
 
+### Deploy
+1. Run `npm run build`. This will create the files for your production app in the `/build` folder
+2. Create a `.firebaserc` file with the following configuration:
+```js
+{
+  "projects": {
+    "default": "YOUR_PROJECT_ID"
+  }
+}
+```
+3. Install firebase CLI with `npm install -g firebase-tools`
+4. Run `firebase login` and access with your account
+5. Run `firebase use default`. This will select the project you specified in the `.firebaserc` file
+6. Run `firebase deploy`.
+7. After this setup, everytime you need to deploy just run `npm run build` and `firebase deploy`
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and uses its basic scripts for starting a development server, building and testing.
 
 The NODE_PATH env variable is set to ./src in every script to allow for absolute imports (e.g. ```import Button from 'components/Button'``` instead of ```import Button from '../../components/Button'```)
