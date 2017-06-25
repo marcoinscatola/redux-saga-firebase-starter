@@ -33,12 +33,14 @@ class Login extends Component {
     }
     render() {
         let {classes} = this.props;
+        let {email, password} = this.state;
         return (
             <FlexBox className={classes.formContainer}>
                 <FlexItem fixed className={classes.inputItem}>
                     <Input
                         placeholder="Email"
                         name="email"
+                        value={email}
                         onChange={this.handleFormChange}
                     />
                 </FlexItem>
@@ -47,6 +49,7 @@ class Login extends Component {
                     type='password'
                     placeholder="Password"
                     name="password"
+                    value={password}
                     onChange={this.handleFormChange}
                 />
                 </FlexItem>

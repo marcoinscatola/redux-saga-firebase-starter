@@ -32,6 +32,7 @@ class Login extends Component {
         loginGoogle(redirect);
     }
     render() {
+        let {email, password} = this.state;
         let {classes} = this.props;
         return (
             <FlexBox className={classes.formContainer}>
@@ -39,16 +40,18 @@ class Login extends Component {
                     <Input
                         placeholder="Email"
                         name="email"
+                        value={email}
                         onChange={this.handleFormChange}
                     />
                 </FlexItem>
                 <FlexItem fixed className={classes.inputItem}>
-                <Input
-                    type='password'
-                    placeholder="Password"
-                    name="password"
-                    onChange={this.handleFormChange}
-                />
+                    <Input
+                        type='password'
+                        placeholder="Password"
+                        value={password}
+                        name="password"
+                        onChange={this.handleFormChange}
+                    />
                 </FlexItem>
                 <FlexItem fixed className={classes.buttonItem}>
                     <Button
