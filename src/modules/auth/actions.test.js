@@ -1,4 +1,4 @@
-import {authActions} from './index';
+import * as authActions from './actions';
 
 test('signupEmail returns an action to attempt a sign up with email and password', () => {
     const email = 'email';

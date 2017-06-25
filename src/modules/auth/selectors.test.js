@@ -1,4 +1,4 @@
-import {authSelectors} from './index';
+import * as authSelectors from './selectors';
 
 const state = {
     auth: {

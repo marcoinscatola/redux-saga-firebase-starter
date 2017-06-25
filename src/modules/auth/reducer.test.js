@@ -1,4 +1,5 @@
-import {authReducer, authActions} from './index';
+import authReducer from './reducer';
+import * as authActions from './actions';
 
 describe('Auth reducer', () => {
     test('returns initial state', () => {
