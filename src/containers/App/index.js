@@ -11,10 +11,15 @@ const styles = {
         color: COLORS.lightText.string(),
         boxSizing: 'border-box',
         padding: '24px',
+        display: 'flex'
     },
     innerWorkarea: {
         maxWidth: 1250,
-        margin: 'auto'
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        display: 'flex',
+        flex: '1 1 auto',
+
     }
 }
 

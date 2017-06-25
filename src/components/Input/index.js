@@ -27,7 +27,7 @@ const styles = {
         boxSizing: 'border-box',
         minHeight: 32,
         outline: 'none',
-
+        resize: 'none'
     },
     'inverted': {
         border: '1px solid #454545',
@@ -44,8 +44,10 @@ class Input extends Component {
             sheet,
             className,
             children,
+            textarea = false,
             ...rest
         } = this.props;
+        let Element = textarea? 'textarea' : 'input';
         let inputClass = cx({
             // Always apply input class
             [classes.input]: true,
@@ -53,7 +55,7 @@ class Input extends Component {
             [classes.inverted]: inverted,
             // Also add the className if it was passed as a prop
         }, className)
-        return <input className={inputClass} {...rest} />
+        return <Element className={inputClass} {...rest} />
     }
 }
 
