@@ -1,7 +1,7 @@
 ##### (Note: this project is still WIP)
 This project aims to be a simple starting point in implementing redux and firebase in a react app. Redux-saga is used to handle side-effects.
 At this moment it's just a learning project but I'm hoping to make it into something that can be useful for people that are looking into adopting a similar stack.
-Even if not suitable for production, reading through the comments and the tests should give you some ideas on how to make your own implementation.
+Even if not suitable for production, reading the comments and the tests should give you some ideas on how to make your own implementation.
 
 ### Setup
 1. Clone this repo with `git clone https://github.com/marcoinscatola/redux-saga-firebase-starter.git`
@@ -34,7 +34,7 @@ Even if not suitable for production, reading through the comments and the tests 
 4. Run `firebase login` and access with your account
 5. Run `firebase use default`. This will select the project you specified in the `.firebaserc` file
 6. Run `firebase deploy`.
-7. After this setup, everytime you need to deploy just run `npm run build` and `firebase deploy`
+7. After this setup, every time you need to deploy just run `npm run build` and `firebase deploy`
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and uses its basic scripts for starting a development server, building and testing.
 
