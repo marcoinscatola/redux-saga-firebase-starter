@@ -4,7 +4,7 @@ import inject from 'react-jss';
 
 const styles = {
     note: {
-        padding: '24px 12px',
+        padding: '12px 12px 24px',
         position: 'relative',
         boxSizing: 'border-box',
         borderRadius: '4px',

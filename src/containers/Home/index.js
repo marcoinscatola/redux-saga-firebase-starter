@@ -1,2 +1,10 @@
 import React from 'react';
-export default () => <h1>Login to start!</h1>
+import Page from 'components/Page';
+import Section from 'components/Section'
+export default () => (
+    <Page>
+        <Section>
+            <h1>Login to start!</h1>
+        </Section>
+    </Page>
+)
