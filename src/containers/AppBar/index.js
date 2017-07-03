@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import AppBarLayout from 'components/AppBar';
-import Logo from './Logo';
+import Logo from 'components/Logo';
 import LoginActions from './LoginActions';
 import LoggedInActions from './LoggedInActions';
 import {authSelectors} from 'modules/auth';
