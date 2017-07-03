@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import inject from 'react-jss';
 import COLORS from 'style/colors';
+import {FlexBox, FlexItem} from 'components/Flex'
 
 const styles = {
     bar: {
@@ -9,27 +10,21 @@ const styles = {
         backgroundColor: COLORS.appBar.string()
     },
     inner: {
+        boxSizing: 'border-box',
         padding: '10px',
         fontSize: '24px',
         fontWeight: '700',
         fontFamily: '"Trebuchet MS", Helvetica, sans-serif',
         color:  COLORS.lightText.string(),
-        '&:after': {
-            content: '""',
-            clear: 'both',
-            display: 'block'
-        }
     },
     logo: {
-        float: 'left',
         display: 'inline-block',
-        marginLeft: '5px',
+        marginRight: 'auto',
         lineHeight: '42px'
     },
     actions: {
-        float: 'right',
         display: 'inline-block',
-        marginRight: '5px'
+        marginLeft: 'auto',
     }
 }
 class AppBar extends Component {
@@ -37,14 +32,18 @@ class AppBar extends Component {
         let {classes, logo, actions} = this.props;
         return (
             <div className={classes.bar}>
-                <div className={classes.inner}>
-                    <div className={classes.logo}>
+                <FlexBox 
+                    alignItems="center" 
+                    direction="row" 
+                    className={classes.inner}
+                >
+                    <FlexItem fixed className={classes.logo}>
                         {logo}
-                    </div>
-                    <div className={classes.actions}>
+                    </FlexItem>
+                    <FlexItem fixed className={classes.actions}>
                         {actions}
-                    </div>
-                </div>
+                    </FlexItem>
+                </FlexBox>
             </div>
         )
     }

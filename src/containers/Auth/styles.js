@@ -2,7 +2,8 @@ export default {
     formContainer: {
         maxWidth: 400,
         margin: 'auto',
-        padding: '24px 0'
+        padding: 12,
+        boxSizing: 'border-box'
     },
     inputItem: {
         height: 48,

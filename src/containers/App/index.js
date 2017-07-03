@@ -10,17 +10,18 @@ const styles = {
         backgroundColor: COLORS.background.string(),
         color: COLORS.lightText.string(),
         boxSizing: 'border-box',
-        padding: '24px',
-        display: 'flex'
+        display: 'flex',
+        position: 'relative'
     },
     innerWorkarea: {
-        maxWidth: 1250,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        display: 'flex',
-        flex: '1 1 auto',
-
-    }
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        top: 0,
+        left: 0,
+        overflow: 'hidden',
+        overflowY: 'auto'
+    },
 }
 
 
