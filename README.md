@@ -1,4 +1,4 @@
-##### (Note: this project is still WIP)
+##### Demo: [redux-saga-firebase-starter.firebaseapp.com](https://redux-saga-firebase-starter.firebaseapp.com)
 This project aims to be a simple starting point in implementing redux and firebase in a react app. Redux-saga is used to handle side-effects.
 At this moment it's just a learning project but I'm hoping to make it into something that can be useful for people that are looking into adopting a similar stack.
 Even if not suitable for production, reading the comments and the tests should give you some ideas on how to make your own implementation.
