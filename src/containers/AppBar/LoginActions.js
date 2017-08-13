@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from 'components/Button';
 
-
-class LoggedInActions extends Component {
+@withRouter
+export default class LoggedInActions extends Component {
 
     handleLogin = () => {
         let {history} = this.props;
@@ -29,4 +29,3 @@ class LoggedInActions extends Component {
     }
 }
 
-export default withRouter(LoggedInActions)

@@ -9,7 +9,17 @@ import Button from 'components/Button';
 import flow from 'lodash/flow';
 import styles from './styles';
 
-class Login extends Component {
+const mapDispatchToProps = dispatch => ({
+    signupEmail: (user, pw, redirect) => dispatch(authActions.signupEmail(user, pw, redirect)),
+    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
+})
+
+@connect(
+    null,
+    mapDispatchToProps
+)
+@inject(styles)
+export default class Signup extends Component {
     state = {
         email: "",
         password: ""
@@ -80,18 +90,3 @@ class Login extends Component {
         )
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    signupEmail: (user, pw, redirect) => dispatch(authActions.signupEmail(user, pw, redirect)),
-    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
-})
-
-const enhance = flow(
-    connect(
-        null,
-        mapDispatchToProps
-    ),
-    inject(styles)
-)
-
-export default enhance(Login);

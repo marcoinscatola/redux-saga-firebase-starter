@@ -3,7 +3,13 @@ import {connect} from 'react-redux';
 import {getLocale, getLocalizedMessage} from 'modules/i18n/selectors'
 import messageFormat from 'intl-messageformat';
 
-class FormattedMessage extends Component {
+@connect(
+    (state, ownProps) => ({
+        locale: getLocale(state),
+        message: getLocalizedMessage(state, ownProps.id)
+    })
+)
+export default class FormattedMessage extends Component {
     constructor(props) {
         super(props);
         this.messageFormat = null;
@@ -25,10 +31,3 @@ class FormattedMessage extends Component {
         )
     }
 }
-
-export default connect(
-    (state, ownProps) => ({
-        locale: getLocale(state),
-        message: getLocalizedMessage(state, ownProps.id)
-    })
-)(FormattedMessage)

@@ -6,10 +6,19 @@ import inject from 'react-jss';
 import {FlexBox, FlexItem} from 'components/Flex';
 import Input from 'components/Input';
 import Button from 'components/Button';
-import flow from 'lodash/flow';
 import styles from './styles';
 
-class Login extends Component {
+const mapDispatchToProps = dispatch => ({
+    loginEmail: (user, pw, redirect) => dispatch(authActions.loginEmail(user, pw, redirect)),
+    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
+})
+
+@connect(
+    null,
+    mapDispatchToProps
+)
+@inject(styles)
+export default class Login extends Component {
     state = {
         email: "",
         password: ""
@@ -80,18 +89,3 @@ class Login extends Component {
         )
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    loginEmail: (user, pw, redirect) => dispatch(authActions.loginEmail(user, pw, redirect)),
-    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
-})
-
-const enhance = flow(
-    connect(
-        null,
-        mapDispatchToProps
-    ),
-    inject(styles)
-)
-
-export default enhance(Login);
