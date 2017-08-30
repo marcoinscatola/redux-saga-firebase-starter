@@ -21,22 +21,56 @@ describe('localeActions.addMessages', () => {
         expect(actions.addMessages().type)
         .toBe(actions.ADD_MESSAGES)
     })
-    test('accepts an object of localized messages as the only parameter', () => {
-        let messages = {
-            en: {
-                testId: "Test translation",
-                testId2: "Test translation 2"
+    test('accepts one or more collections of localized messages as parameters', () => {
+        let collection = {
+            messages: {
+                en: {
+                    testId: "Test translation",
+                    testId2: "Test translation 2"
+                },
+                it: {
+                    testId: "Test traduzione",
+                    testId2: "Test traduzione 2"
+                }
             },
-            it: {
-                testId: "Test traduzione",
-                testId2: "Test traduzione 2"
-            },
+            hash: 'testHash'
         }
-        expect(actions.addMessages(messages))
+        expect(actions.addMessages(collection))
         .toEqual({
             type: actions.ADD_MESSAGES,
             payload: {
-                messages
+                collections: [collection]
+            }
+        })
+    })
+    test('accepts multiple collections', () => {
+        let collection1 = {
+            messages: {
+                en: {
+                    testId: "Test translation"
+                },
+                it: {
+                    testId: "Test traduzione"
+                }
+            },
+            hash: 'testHash'
+        }
+        let collection2 = {
+            messages: {
+                en: {
+                    testId2: "Test translation2"
+                },
+                it: {
+                    testId2: "Test traduzione2"
+                }
+            },
+            hash: 'testHash2'
+        }
+        expect(actions.addMessages(collection1, collection2))
+        .toEqual({
+            type: actions.ADD_MESSAGES,
+            payload: {
+                collections: [collection1, collection2]
             }
         })
     })
