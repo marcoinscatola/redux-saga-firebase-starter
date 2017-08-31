@@ -3,15 +3,23 @@ import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {authActions} from 'modules/auth';
 import Button from 'components/Button';
+import { localize } from 'modules/i18n';
+import collection from './messages';
+
 
 @withRouter
+@localize({
+    collections: collection,
+    messageIds: {
+        logoutButton: 'LoggedInActions.logoutButton'
+    }
+})
 @connect(
     null,
     dispatch => ({
         logout: () => dispatch(authActions.logout())
     })
 )
-
 export default class LoggedInActions extends Component {
     
         handleLogout = () => {
@@ -21,10 +29,11 @@ export default class LoggedInActions extends Component {
         }
     
         render() {
+            let {logoutButton} = this.props;
             return (
                 <div>
                     <Button onClick={this.handleLogout}>
-                        Log out
+                        {logoutButton.format()}
                     </Button>
                 </div>
             )
