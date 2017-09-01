@@ -5,7 +5,7 @@ import {authActions} from 'modules/auth';
 import Button from 'components/Button';
 import { localize } from 'modules/i18n';
 import collection from './messages';
-
+import LanguageSelector from 'containers/LanguageSelector';
 
 @withRouter
 @localize({
@@ -35,6 +35,7 @@ export default class LoggedInActions extends Component {
                     <Button onClick={this.handleLogout}>
                         {logoutButton.format()}
                     </Button>
+                    <LanguageSelector />
                 </div>
             )
         }

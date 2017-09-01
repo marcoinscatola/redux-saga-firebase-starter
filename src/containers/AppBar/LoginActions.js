@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import Button from 'components/Button';
 import { localize } from 'modules/i18n';
 import collection from './messages';
+import LanguageSelector from 'containers/LanguageSelector';
 
 
 @withRouter
@@ -36,6 +37,7 @@ export default class LoggedInActions extends Component {
                 <Button onClick={this.handleSignup}>
                     {signupButton.format()}
                 </Button>
+                <LanguageSelector />
             </div>
         )
     }
