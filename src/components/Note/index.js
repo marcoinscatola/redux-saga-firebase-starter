@@ -45,12 +45,12 @@ const styles = {
 
 class Note extends Component {
     render() {
-        let {title, text, classes, onRemove} = this.props;
+        let {title, text, classes, onActionClick, actionText} = this.props;
         return (
             <div className={classes.note}>
                 <h2 className={classes.title}>{title}</h2>
                 <p className={classes.body}>{text}</p>
-                <div className={classes.actions} onClick={onRemove}>Remove</div>
+                <div className={classes.actions} onClick={onActionClick}>{actionText}</div>
             </div>
         )
     }
@@ -69,7 +69,7 @@ Note.propTypes = {
      */
     text: PropTypes.string,
     /**
-     * The function to call when the user clicks on the 'remove' link
+     * The function to call when the user clicks on the 'action' link
      */
-    onRemove: PropTypes.func,
+    onActionClick: PropTypes.func,
 }

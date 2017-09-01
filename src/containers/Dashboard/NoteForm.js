@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import inject from 'react-jss';
-import {connect} from 'react-redux';
-import flow from 'lodash/flow';
-import {noteActions} from 'modules/notes';
-import {FlexBox, FlexItem} from 'components/Flex';
-import Input from 'components/Input';
-import Button from 'components/Button';
+import React, { Component } from "react";
+import inject from "react-jss";
+import { connect } from "react-redux";
+import { noteActions } from "modules/notes";
+import { localize } from "modules/i18n";
+import { FlexBox, FlexItem } from "components/Flex";
+import Input from "components/Input";
+import Button from "components/Button";
+import messageCollection from "./messages";
 
 let styles = {
     formItem: {
@@ -28,11 +29,26 @@ let styles = {
     },
 }
 
-class NoteForm extends Component {
+const mapDispatchToProps = dispatch => ({
+    addNote: note => dispatch(noteActions.addNote(note))
+})
+
+@connect(null, mapDispatchToProps)
+@localize({
+    collections: messageCollection,
+    messageIds: {
+        textPlaceholder: 'NoteForm.textPlaceholder',
+        titlePlaceholder: 'NoteForm.titlePlaceholder',
+        addNew: 'NoteForm.addNew'
+    }
+})
+@inject(styles)
+export default class NoteForm extends Component {
     state = {
         title: '',
         text: ''
     }
+
     handleFormChange = (e) => {
         let {name, value} = e.target;
         this.setState({[name]:value})
@@ -49,12 +65,12 @@ class NoteForm extends Component {
 
     render() {
         let {title, text} = this.state;
-        let {classes} = this.props;
+        let {classes, textPlaceholder, titlePlaceholder, addNew} = this.props;
         return (
-            <FlexBox className={classes.formItem}>
+            <FlexBox className={classes.formItem}>    
                 <FlexItem className={classes.inputItem}>
                     <Input
-                        placeholder="Title"
+                        placeholder={titlePlaceholder.format()}
                         name="title"
                         value={title}
                         onChange={this.handleFormChange}
@@ -62,7 +78,7 @@ class NoteForm extends Component {
                 </FlexItem>
                 <FlexItem className={classes.inputItem}>
                     <Input
-                        placeholder="Text"
+                        placeholder={textPlaceholder.format()}
                         name="text"
                         value={text}
                         textarea
@@ -75,22 +91,10 @@ class NoteForm extends Component {
                         primary
                         onClick={this.handleAddNote}
                     >
-                        Add note
+                        {addNew.format()}
                     </Button>
                 </FlexItem>
             </FlexBox>
         );
     }
-
 }
-
-const mapDispatchToProps = dispatch => ({
-    addNote: note => dispatch(noteActions.addNote(note))
-})
-
-const enhance = flow(
-    connect(null, mapDispatchToProps),
-    inject(styles)
-)
-
-export default enhance(NoteForm);

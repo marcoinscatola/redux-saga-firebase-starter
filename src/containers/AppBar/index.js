@@ -6,9 +6,14 @@ import LoginActions from './LoginActions';
 import LoggedInActions from './LoggedInActions';
 import {authSelectors} from 'modules/auth';
 import {withRouter} from 'react-router-dom';
-import flow from 'lodash/flow';
 
-class AppBar extends Component {
+@withRouter
+@connect(
+    state => ({
+        loggedIn: authSelectors.loggedIn(state)
+    })
+)
+export default class AppBar extends Component {
     render() {
         let {loggedIn, location} = this.props;
         const logo = <Logo />
@@ -21,13 +26,5 @@ class AppBar extends Component {
         )
     }
 }
-const mapStateToProps = state => ({
-    loggedIn: authSelectors.loggedIn(state)
-})
 
-const enhance = flow(
-    connect(mapStateToProps),
-    withRouter
-)
 
-export default enhance(AppBar);

@@ -6,10 +6,32 @@ import inject from 'react-jss';
 import {FlexBox, FlexItem} from 'components/Flex';
 import Input from 'components/Input';
 import Button from 'components/Button';
-import flow from 'lodash/flow';
 import styles from './styles';
+import { localize } from 'modules/i18n';
+import collection from './messages';
 
-class Login extends Component {
+
+@localize({
+    collections: collection,
+    messageIds: {
+        emailPlaceholder: 'Signup.emailPlaceholder',
+        passwordPlaceholder: 'Signup.passwordPlaceholder',
+        withEmailPassword: 'Signup.withEmailPassword',
+        or: 'Signup.or',
+        withGoogle: 'Signup.withGoogle',
+        loginCTA: 'Signup.loginCTA',
+        loginLink: 'Signup.loginLink'
+    }
+})
+@connect(
+    null,
+    dispatch => ({
+        signupEmail: (user, pw, redirect) => dispatch(authActions.signupEmail(user, pw, redirect)),
+        loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
+    })
+)
+@inject(styles)
+export default class Signup extends Component {
     state = {
         email: "",
         password: ""
@@ -32,26 +54,35 @@ class Login extends Component {
         loginGoogle(redirect);
     }
     render() {
-        let {classes} = this.props;
+        let { 
+            classes, 
+            emailPlaceholder, 
+            passwordPlaceholder, 
+            withEmailPassword, 
+            or, 
+            withGoogle, 
+            loginCTA, 
+            loginLink 
+        } = this.props;
         let {email, password} = this.state;
         return (
             <FlexBox className={classes.formContainer}>
                 <FlexItem fixed className={classes.inputItem}>
                     <Input
-                        placeholder="Email"
+                        placeholder={emailPlaceholder.format()}
                         name="email"
                         value={email}
                         onChange={this.handleFormChange}
                     />
                 </FlexItem>
                 <FlexItem fixed className={classes.inputItem}>
-                <Input
-                    type='password'
-                    placeholder="Password"
-                    name="password"
-                    value={password}
-                    onChange={this.handleFormChange}
-                />
+                    <Input
+                        type='password'
+                        placeholder={passwordPlaceholder.format()}
+                        name="password"
+                        value={password}
+                        onChange={this.handleFormChange}
+                    />
                 </FlexItem>
                 <FlexItem fixed className={classes.buttonItem}>
                     <Button
@@ -59,39 +90,27 @@ class Login extends Component {
                         className={classes.button}
                         onClick={this.handleLogin}
                     >
-                        Sign up with email/password
+                        {withEmailPassword.format()}
                     </Button>
                 </FlexItem>
                 <FlexItem fixed className={classes.orLabel}>
-                    or
+                    {or.format()}
                 </FlexItem>
                 <FlexItem fixed className={classes.buttonItem}>
                     <Button
                         className={classes.button}
                         onClick={this.handleLoginGoogle}
                     >
-                        Sign up with Google
+                        {withGoogle.format()}
                     </Button>
                 </FlexItem>
                 <FlexItem fixed className={classes.smallLabel}>
-                    Already have an account? Log in <Link to='/login'>here</Link>
+                    {loginCTA.format()}
+                    <Link to='/login'>
+                        {loginLink.format()}
+                    </Link>
                 </FlexItem>
             </FlexBox>
         )
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    signupEmail: (user, pw, redirect) => dispatch(authActions.signupEmail(user, pw, redirect)),
-    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
-})
-
-const enhance = flow(
-    connect(
-        null,
-        mapDispatchToProps
-    ),
-    inject(styles)
-)
-
-export default enhance(Login);

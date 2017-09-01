@@ -1,9 +1,21 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from 'components/Button';
+import { localize } from 'modules/i18n';
+import collection from './messages';
+import LanguageSelector from 'containers/LanguageSelector';
 
 
-class LoggedInActions extends Component {
+@withRouter
+@localize({
+    collections: collection,
+    messageIds: {
+        loginButton: 'LoginActions.loginButton',
+        signupButton: 'LoginActions.signupButton'
+    }
+})
+@withRouter
+export default class LoggedInActions extends Component {
 
     handleLogin = () => {
         let {history} = this.props;
@@ -16,17 +28,18 @@ class LoggedInActions extends Component {
     }
 
     render() {
+        let {loginButton, signupButton} = this.props;
         return (
             <div>
                 <Button primary onClick={this.handleLogin}>
-                    Login
+                    {loginButton.format()}
                 </Button>
                 <Button onClick={this.handleSignup}>
-                    Sign up
+                    {signupButton.format()}
                 </Button>
+                <LanguageSelector />
             </div>
         )
     }
 }
 
-export default withRouter(LoggedInActions)

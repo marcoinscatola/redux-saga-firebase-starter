@@ -20,11 +20,13 @@ const styles = {
     logo: {
         display: 'inline-block',
         marginRight: 'auto',
-        lineHeight: '42px'
+        lineHeight: '42px',
+        overflow: 'visible'
     },
     actions: {
         display: 'inline-block',
         marginLeft: 'auto',
+        overflow: 'visible'
     }
 }
 class AppBar extends Component {

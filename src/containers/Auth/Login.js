@@ -6,10 +6,31 @@ import inject from 'react-jss';
 import {FlexBox, FlexItem} from 'components/Flex';
 import Input from 'components/Input';
 import Button from 'components/Button';
-import flow from 'lodash/flow';
 import styles from './styles';
+import { localize } from 'modules/i18n';
+import collection from './messages';
 
-class Login extends Component {
+@localize({
+    collections: collection,
+    messageIds: {
+        emailPlaceholder: 'Login.emailPlaceholder',
+        passwordPlaceholder: 'Login.passwordPlaceholder',
+        withEmailPassword: 'Login.withEmailPassword',
+        or: 'Login.or',
+        withGoogle: 'Login.withGoogle',
+        signupCTA: 'Login.signupCTA',
+        signupLink: 'Login.signupLink'
+    }
+})
+@connect(
+    null,
+    dispatch => ({
+        loginEmail: (user, pw, redirect) => dispatch(authActions.loginEmail(user, pw, redirect)),
+        loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
+    })
+)
+@inject(styles)
+export default class Login extends Component {
     state = {
         email: "",
         password: ""
@@ -32,13 +53,22 @@ class Login extends Component {
         loginGoogle(redirect);
     }
     render() {
+        let { 
+            classes, 
+            emailPlaceholder, 
+            passwordPlaceholder, 
+            withEmailPassword, 
+            or, 
+            withGoogle, 
+            signupCTA, 
+            signupLink 
+        } = this.props;
         let {email, password} = this.state;
-        let {classes} = this.props;
         return (
             <FlexBox className={classes.formContainer}>
                 <FlexItem fixed className={classes.inputItem}>
                     <Input
-                        placeholder="Email"
+                        placeholder={emailPlaceholder.format()}
                         name="email"
                         value={email}
                         onChange={this.handleFormChange}
@@ -47,7 +77,7 @@ class Login extends Component {
                 <FlexItem fixed className={classes.inputItem}>
                     <Input
                         type='password'
-                        placeholder="Password"
+                        placeholder={passwordPlaceholder.format()}
                         value={password}
                         name="password"
                         onChange={this.handleFormChange}
@@ -59,39 +89,27 @@ class Login extends Component {
                         className={classes.button}
                         onClick={this.handleLogin}
                     >
-                        Login with email/password
+                         {withEmailPassword.format()}
                     </Button>
                 </FlexItem>
                 <FlexItem fixed className={classes.orLabel}>
-                    or
+                    {or.format()}
                 </FlexItem>
                 <FlexItem fixed className={classes.buttonItem}>
                     <Button
                         className={classes.button}
                         onClick={this.handleLoginGoogle}
                     >
-                        Login with Google
+                        {withGoogle.format()}
                     </Button>
                 </FlexItem>
                 <FlexItem fixed className={classes.smallLabel}>
-                    Don't have an account? Sign up <Link to='/signup'>here</Link>
+                    {signupCTA.format()}
+                    <Link to='/signup'>
+                        {signupLink.format()}
+                    </Link>
                 </FlexItem>
             </FlexBox>
         )
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    loginEmail: (user, pw, redirect) => dispatch(authActions.loginEmail(user, pw, redirect)),
-    loginGoogle: (redirect) => dispatch(authActions.loginGoogle(redirect))
-})
-
-const enhance = flow(
-    connect(
-        null,
-        mapDispatchToProps
-    ),
-    inject(styles)
-)
-
-export default enhance(Login);
