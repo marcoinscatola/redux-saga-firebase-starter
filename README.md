@@ -36,6 +36,14 @@ Even if not suitable for production, reading the comments and the tests should g
 6. Run `firebase deploy`.
 7. After this setup, every time you need to deploy just run `npm run build` and `firebase deploy`
 
+### i18n
+Internationalization is a common requirement for many apps so I included a simple module to handle string localization and number/date formatting.  
+If you don't need these features in your app you can just ignore the module and write your texts as static strings.  
+  
+You can find the documentation for the i18n module [here](src/modules/i18n/README.md)
+
+------
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and uses its basic scripts for starting a development server, building and testing.
 
 The NODE_PATH env variable is set to ./src in every script to allow for absolute imports (e.g. ```import Button from 'components/Button'``` instead of ```import Button from '../../components/Button'```)
