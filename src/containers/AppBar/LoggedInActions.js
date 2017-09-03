@@ -32,10 +32,10 @@ export default class LoggedInActions extends Component {
             let {logoutButton} = this.props;
             return (
                 <div>
+                    <LanguageSelector />
                     <Button onClick={this.handleLogout}>
                         {logoutButton.format()}
                     </Button>
-                    <LanguageSelector />
                 </div>
             )
         }

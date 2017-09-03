@@ -31,13 +31,13 @@ export default class LoggedInActions extends Component {
         let {loginButton, signupButton} = this.props;
         return (
             <div>
+                <LanguageSelector />
                 <Button primary onClick={this.handleLogin}>
                     {loginButton.format()}
                 </Button>
                 <Button onClick={this.handleSignup}>
                     {signupButton.format()}
                 </Button>
-                <LanguageSelector />
             </div>
         )
     }
