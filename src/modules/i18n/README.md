@@ -190,7 +190,7 @@ Assuming that you've already added the messages in the store you can use the `Fo
 
 ## <a name="API"></a>API
 ### <a name="makeCollection"></a>makeCollection
-The `makeCollection` utility takes an object containing messages translated in various languages and return a collection object. A collection object is basically an object containing the messages and a hash, and it can be used in the payload for the `ADD_MESSAGE` action. The hash is checked to avoid loading the same messages multiple times causing useless rerenders.
+The `makeCollection` utility takes an object containing messages translated in various languages and returns a collection object. A collection object is basically an object containing the messages and a hash, and it can be used in the payload for the `ADD_MESSAGE` action. The hash is checked to avoid loading the same messages multiple times causing useless rerenders.
 ```js
 import {makeCollection} from 'modules/i18n';
 let collection = makeCollection({
